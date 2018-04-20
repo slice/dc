@@ -1,3 +1,8 @@
+extern crate dc;
+
+use dc::{Item, ItemType, Material};
+
 fn main() {
-    println!("Hello, world!");
+    let item = Item::new(ItemType::Tie, Material::Gold);
+    println!("I have a: {}", item.describe());
 }
