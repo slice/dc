@@ -1,3 +1,5 @@
+use std::fmt;
+
 pub struct Item {
     pub item_type: ItemType,
     pub material: Material,
@@ -10,9 +12,11 @@ impl Item {
             material,
         }
     }
+}
 
-    pub fn describe(&self) -> String {
-       format!("{} {}", self.material.adjective(), self.item_type.describe())
+impl fmt::Display for Item {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{} {}", self.material.adjective(), self.item_type.describe())
     }
 }
 
