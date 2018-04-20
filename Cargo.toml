@@ -1,0 +1,6 @@
+[package]
+name = "dc"
+version = "0.1.0"
+authors = ["slice <ryaneft@gmail.com>"]
+
+[dependencies]
