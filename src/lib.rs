@@ -16,80 +16,51 @@ impl Item {
 
 impl fmt::Display for Item {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} {}", self.material.adjective(), self.item_type.describe())
+        write!(f, "{} {}", self.material.adjective(), self.item_type.name())
     }
 }
 
-pub enum ItemType {
-    // articles of clothing
-    Tie,
-    Helmet,
-    Shoe,
-
-    // objects
-    Plate,
-    Can
-}
+#[derive(Copy, Clone)]
+pub struct ItemType(&'static str);
+pub const ITEMS: [ItemType; 3] = [
+    ItemType("boot"),
+    ItemType("tie"),
+    ItemType("helmet"),
+];
 
 impl ItemType {
-    pub fn describe(&self) -> &str {
-        match *self {
-            ItemType::Tie => "tie",
-            ItemType::Helmet => "helmet",
-            ItemType::Shoe => "shoe",
-            ItemType::Plate => "plate",
-            ItemType::Can => "can",
-        }
+    pub fn named(name: &str) -> ItemType {
+        let it = ITEMS.iter().find(|&item| item.0 == name).expect("unknown item");
+        (*it).clone()
+    }
+
+    pub fn name(&self) -> &'static str {
+        self.0
     }
 }
 
-pub enum Material {
-    // basic metals
-    Gold,
-    Iron,
-    Copper,
+#[derive(Copy, Clone)]
+pub struct Material(&'static str, f32);
+pub const MATERIALS: [Material; 5] = [
+    Material("gold", 1.5),
+    Material("iron", 1.3),
+    Material("copper", 1.1),
 
-    // worthless materials
-    Silk,
-    Cobweb,
-    Glass,
-
-    // precious materials
-    Shiny,
-    Enhanced,
-    Ultimate,
-}
+    Material("shiny", 1.8),
+    Material("awesome", 2.0),
+];
 
 impl Material {
-    pub fn worth(&self) -> f32 {
-        match *self {
-            Material::Gold => 1.5,
-            Material::Iron => 1.2,
-            Material::Copper => 1.2,
-
-            Material::Silk => 0.5,
-            Material::Glass => 0.7,
-            Material::Cobweb => 0.2,
-
-            Material::Shiny => 1.8,
-            Material::Enhanced => 2.0,
-            Material::Ultimate => 2.3,
-        }
+    pub fn named(name: &str) -> Material {
+        let mat = MATERIALS.iter().find(|&mat| mat.0 == name).expect("unknown material");
+        (*mat).clone()
     }
 
-    pub fn adjective(&self) -> &str {
-        match *self {
-            Material::Gold => "golden",
-            Material::Iron => "iron",
-            Material::Copper => "copper",
-
-            Material::Silk => "silk",
-            Material::Glass => "glass",
-            Material::Cobweb => "web",
-
-            Material::Shiny => "shiny",
-            Material::Enhanced => "enhanced",
-            Material::Ultimate => "ultimate",
+    pub fn adjective(&self) -> String {
+        return if self.0 == "gold" {
+            String::from("golden")
+        } else {
+            String::from(self.0)
         }
     }
 }
